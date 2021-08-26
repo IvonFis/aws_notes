@@ -14,6 +14,8 @@ To give your Lambda function access to an Amazon S3 bucket in the same AWS accou
 
 Important: If your S3 bucket and the function's IAM role are in different accounts, then you must also grant the required permissions on the S3 bucket policy. For more information, see How can I provide cross-account access to objects that are in Amazon S3 buckets?
 
+Lambda execution role: https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html#permissions-executionrole-console
+
 <h2>Layers</h2>
  
  https://medium.com/swlh/how-to-add-python-pandas-layer-to-aws-lambda-bab5ea7ced4f
