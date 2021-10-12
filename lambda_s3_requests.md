@@ -74,3 +74,28 @@ def lambda_handler(event, context):
     bucket.upload_file('/tmp/somedf.csv', 'temp.csv')
     return {'message': 'success!!'}
 ~~~
+
+ 
+<h2>Ajustar permisos de time out lambda</h2>
+  
+https://stackoverflow.com/questions/43577746/aws-lambda-task-timed-out/43578149
+
+Si la función a correr tarda más de 3 segundos en ejecutarse, se obtendrá un error por time out. 
+
+Ir a la configuración, configuración general/básica, Editar, Configurar al tiempo deseado (límite de 15 minutos). Se añadió 1min 10 segundos para API CENACE
+
+<h2>Lambda: Access denied PutObject operation</h2>
+
+Como se mencionó anteriormente, un rol y usuario para los permisos de S3 y  lambda tiene que crearse con permisos para S3 y QS
+https://aws.amazon.com/es/premiumsupport/knowledge-center/lambda-execution-role-s3-bucket/
+
+Para permisos específicos, se crea un ROL: 
+
+Y se añade una política asociada al resource S3 que se necesite. 
+
+![image](https://user-images.githubusercontent.com/33365899/137024968-e62157cf-bddf-487b-a141-5d5e75b3c4a2.png)
+
+
+
+
+
