@@ -64,13 +64,30 @@ Transport layer passes data segments to the Network Layer. The network layer wor
 
 The network layer functions are:
 
-- Logical addressing - IPV4, IPV6
-- Path determination - 
-- Routing
+- Logical addressing - IPV4, IPV6 Every computer in the network has an unique IP adress, Network layer assigns an IP to the receiver and the sender to each segment to form an Packet (IP adresses are assigned to ensure that each data package can reach the correct destination).
+- Routing - A method of moving data packed from source to destination based on the logical adress format (IPv4, IPv6).
+- Path determination - Choose the best possible path to data delivery from source to destination. The protocols are OSPF - Open Shortest Path First, BGP - Border Gateway Protocol and IS-IS - Intermidiate system to intermidiate system. 
 
-## Data Lake
+![image](https://user-images.githubusercontent.com/33365899/170197049-7ba88b60-46dc-48b0-9d59-ed740210a388.png)
+
+
+## Data Link Layer
+
+Data Link receives data packet from the network layer. This data packages contain IP adresses of the senders and receiving. 
+
+- Local adressing : done at network layer where senders and receivers IP adresses are assigned to each segment to form a data packet, 
+- Physical adressing : done at data link layer, where MAC adresses (12 digit alphanumeric number embedded in the NIC) of sender and receiver are assigned to each data package to form a Frame (data unit in a data link layer is called frame). 
+
+The data link layer is embeddes as software in the network interface card, NIC. Its basic funtions are
+
+1. Allows upper layes to access media (software) using techniques such as Framing, 
+2. Controls how data is placed and received from media using techniques such as MAC, and error detection.
 
 ## Physical Layer
+
+![image](https://user-images.githubusercontent.com/33365899/170199292-03b0f4ff-0b6f-4628-ae61-633f5b8e5d30.png)
+
+The physical layer converts the binary sequence from the data link layer into signals ands trnsmited over local media. The signals are converted into bits, and pass to the data link layer as a Frame, and decapsulated throguh the highest layers to the application layer. 
 
 
 
