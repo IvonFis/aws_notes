@@ -28,3 +28,50 @@ protocols such as HTTP, HTTPS. [see more](https://www.geeksforgeeks.org/protocol
 8. SNMP: Simple Network Management Protocol, port **161** TCP and **162** UDP, t is a way that servers can share information about their current state, and also a channel through which an administrate can modify pre-defined values. 
 9. DNS: Domain Name System, port **53**, DNS service must translate the name into the corresponding IP address
 10. DHCP: Dynamic Host Configuration Protocol (DHCP), port **67** and **68**, It gives IP addresses to hosts
+
+## Presentation Layer
+
+It receives data from application layer. Converts strings to binary, reducing the number of bit to represent the original data. Ex. ASCII - > EBCDIC. Consists of Translation, Data Compression (lossy or lossless data), before transmission data is encrypted (SSL, Secute Sockets Layer protocol)
+
+## Session Layer
+
+Session layer protocols helps in setting up and managing connections, enabling sending and receiving data followed by termination of sessions or connections. Ex. APIs, NETBIOS. Before a connection is stablished authentication and authorization process must be performed. It also keeps tracks of which data package (files within the page) belongs to which file, called session management. 
+
+## Transport Layer
+
+Controls the reliability of communications through 
+
+- Segmentation: Data is divided in segments, having each a Port Number (direct the segment to the correct application) and Sequence Number (assamble segments in the correct order). 
+- Flow Control: Controls the amout of data being transmited and,
+- Error control: data control (automatic repeated request adding a group of bits called checksum )
+- Connection and connectionless transmission
+
+The protocols are:
+
+- TCP: Transmission Control Protocol
+- UDP: User Datagra Protocol
+
+### Connection and conectionless transmission
+
+|Protocol	|Service	|Advantages	|Ex
+| -------|--------|----------|-------|
+|TCP: Transmission Control Protocol|	Conection-Orientes Transmission	|Lost data can be re-transmited	|Video games, Songs
+|UDP: User Datagra Protocol|	Connectioless Transmission|	Faster because it doesn't provide any feedback|	Email, WWW
+
+## Network Layer
+
+Transport layer passes data segments to the Network Layer. The network layer works for the transmission of the received data segments from one computer to another located in different networks. Data units in the network layer are called **packets*, it is in the layer where routers recide. 
+
+The network layer functions are:
+
+- Logical addressing - IPV4, IPV6
+- Path determination - 
+- Routing
+
+## Data Lake
+
+## Physical Layer
+
+
+
+
