@@ -48,7 +48,7 @@ import boto3
 
 # call s3 bucket
 s3 = boto3.resource('s3')
-bucket = s3.Bucket('lambda-test-eon')
+bucket = s3.Bucket('bucket_name')
 
 
 def lambda_handler(event, context):
@@ -93,7 +93,7 @@ Para permisos específicos, se crea un ROL:
 
 Y se añade una política asociada al resource S3 que se necesite. 
 
-![image](https://user-images.githubusercontent.com/33365899/137024968-e62157cf-bddf-487b-a141-5d5e75b3c4a2.png)
+![image](https://user-images.githubusercontent.com/33365899/170792403-bec1e64a-2a5b-4980-b11b-bd65a8871419.png)
 
 
 
