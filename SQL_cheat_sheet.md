@@ -84,6 +84,50 @@ WHERE name LIKE '_her%'
 > *t*heresa
 ```
 
+### GROUP BY
+We need to choose a categorical column to GROUP BY. 
+
+```sql
+SELECT category, division SUM(data_col)
+FROM tabl
+GROUP BY category, division
+```
+or 
+
+```sql
+SELECT category, SUM(data_col)
+FROM tabl
+WHERE category != 'A'
+GROUP BY category
+ORDER BY SUM(data_col)
+```
+```sql
+SELECT DATE(TIMESPTAMP_DATE), SUM(amount)  FROM payment
+GROUP BY DATE(TIMESTAMP_DATE)
+```
+
+### HAVING
+The having clause allow us to filter **after** an aggregation has already taken place. 
+
+```sql
+SELECT company, SUM(sales)
+FROM tbl
+WHERE != 'Google'
+GROUP BY company
+HAVING SUM(sales) > 1000;
+```
+
+Having allow us to aggregate result as a filter along with a GROUP BY.
+
+### JOIN
+
+```sql
+SELECT district, email FROM address
+INNER JOIN customer ON
+adress.adress_id = customer.adress_id
+WHERE district = 'CALIFORNIA'
+```
+
 ### GROUP BY vs HAVING
 ![image](https://user-images.githubusercontent.com/33365899/170773313-f2e93a66-5f2e-4556-86ed-09449c0df963.png)
 
@@ -94,6 +138,35 @@ WHERE name LIKE '_her%'
 *TRUNCATE* It is used to drop the whole table
 
 *DROP* It is used to delete all the rows of a relation (table) in one go.  By using this command the existence of all the rows of the table is lost. It is comparatively faster than the delete command as it deletes all the rows fastly. 
+
+## Aggregate functions
+
+Their main idea is to take multiple inputs and return a single outpuT, as:
+
+```sql
+AVG() - returns a float. You could use ROUND()
+COUNT()
+MAX()
+MIN()
+SUM()
+```
+Happening only on SELECT and HAVING clause. 
+
+Example
+
+Returns the minimum and maximum price from the table catalog
+
+```sql
+SELECT MIN(cost), MAX(cost)
+from catalog;
+```
+
+Retuns the average of the price with 2 decimal places from the table catalog
+
+```sql
+SELECT ROUND(AVG(price, 2))
+from catalog;
+```
 
 ## SQL UPDATE TABLE
 
@@ -184,5 +257,47 @@ or
 
 RIGHT JOIN tb2 ON join conditions
 ```
+## LOGICAL OPERATIONS
 
+CASE
+```sql
+SELECT
+SUM(
+CASE rating
+ WHEN 'R' THEN 1 ELSE 0
+  END
+) AS r
+FROM film
+SUM(
+CASE rating
+ WHEN 'PG' THEN 1 ELSE 0
+  END
+) AS pg
+FROM film
+```
+COALESCE
 
+It accepts an unlimited number of arguments. Returns the first argument that is not null.
+
+```sql
+SELECT item, (price - COALESCE(discount, 0))
+AS final FROM table
+```
+CAST
+Lets you convert one datatype into another
+
+```sql
+SELECT item, CAST(date AS TIMESTAMP) AS new_date
+AS final FROM table
+```
+
+NULLIF
+Takes two inputs and returns NULL If both are equal, otherwise it return the first argument passed. Ex. NULLIF(10,12)=null, NULLIF(12,10)=12
+
+## OTHER EXPAMPLES
+
+```sql
+SELECT "date_parse"("concat"(CAST(fecha AS varchar), ' ', CAST(hora - 1 AS varchar)), '%Y-%m-%d %H') TIMESTAMP, *
+FROM "eoncenace"."pmlmensual"
+WHERE clavedelnodo='05CHU-230' AND fecha > DATE('2022-04-26') AND NOT (hora=25)
+```
