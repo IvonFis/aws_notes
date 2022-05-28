@@ -42,3 +42,26 @@ A data warehouse like Amazon Redshift is your best choice when you need to pull 
 ### References
 
 [1] https://docs.aws.amazon.com/athena/latest/ug/service-limits.html
+
+---
+
+## NOTES AWS
+
+Prtition projection: values and locations are calculated from the configuration rather than the read fron the AWS GLue Catalog. Avoid call GetPArtitions API call. In memory operations are oftern faster. 
+
+EX. projection.datehour.type = 'date'
+
+Federated query: RUn SQL across noSQL and SQL db. Use source connectiors that run on AWS Lambda to run federated queries. 
+
+Access: IAM, Athena APIs, CLI, JDBC, ODBC COnnection (Symba, BI tools)
+
+Pay by query: $5 per TB Scanned. SAVE COSTS BY compress, convert to columnar, use partitioning. Free DDL queries, Failed queries. 
+
+EX. parquet 87% less size, 34% faster, 99% less data scanned, 99% cheaper.
+
+Athena complements, redshift and EMR. 
+
+
+
+
+
