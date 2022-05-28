@@ -301,3 +301,147 @@ SELECT "date_parse"("concat"(CAST(fecha AS varchar), ' ', CAST(hora - 1 AS varch
 FROM "eoncenace"."pmlmensual"
 WHERE clavedelnodo='05CHU-230' AND fecha > DATE('2022-04-26') AND NOT (hora=25)
 ```
+
+```sql
+sele = 'SELECT avg(local_marginal_price_mxn_mwh) as MEAN, stddev_pop(local_marginal_price_mxn_mwh) as STD'
+    fro = 'FROM "cenace_parquet"."rtm_lmp"'
+    whe = 'WHERE date BETWEEN date(' + str('\'' + str(date1) + '\'') + ') AND date(' + str('\'' + str(date2) + '\'') + ');'
+```
+
+```sql
+sele1 = 'SELECT nodos.clave, YEAR(pml.date) AS year, MONTH(pml.date) AS month, '
+    sele2 = 'AVG(pml.local_marginal_price_mxn_mwh) AS pml, nodos.sistema, nodos.centro_de_control_regional, '
+    sele3 = 'nodos.zona_de_carga, nodos.entidad_federativa_inegi'
+    sele = sele1 + sele2 + sele3
+    fro = 'FROM "cenace_parquet"."dam_lmp" AS pml'
+    joiin = 'JOIN "cenace_nodes"."nodes" AS nodos ON pml.node_id=nodos.clave'
+    gby = 'GROUP BY clave, sistema, YEAR(pml.date), MONTH(pml.date), centro_de_control_regional, zona_de_carga, entidad_federativa_inegi'
+    odby = 'ORDER BY clave, year, month;'
+```
+
+```sql
+calling_string_mda = '''
+    WITH dhours AS (
+        SELECT
+            DISTINCT hour
+        from
+            "cenace_parquet"."dam_lmp"
+    ),
+    schedule AS (
+        SELECT
+            hour,
+            CASE
+                WHEN hour >= 8
+                AND hour <= 18 THEN 'dia'
+                ELSE 'noche'
+            END AS tipo
+        FROM
+            dhours
+    ),
+    daily AS (
+        SELECT
+            lmp.date,
+            lmp.node_id,
+            schedule.tipo,
+            AVG(lmp.local_marginal_price_mxn_mwh) AS average
+        FROM
+            "cenace_parquet"."dam_lmp" as lmp
+            LEFT JOIN schedule ON schedule.hour = lmp.hour
+        WHERE
+            lmp.node_id IN ('05LZM-115', '03BFM-230')
+            AND lmp.date >= current_date - interval '1' day
+        GROUP BY
+            lmp.date,
+            lmp.node_id,
+            schedule.tipo
+    ),
+    yearly AS (
+        SELECT
+            lmp.node_id,
+            schedule.tipo,
+            AVG(lmp.local_marginal_price_mxn_mwh) AS average
+        FROM
+            "cenace_parquet"."dam_lmp" as lmp
+            LEFT JOIN schedule ON schedule.hour = lmp.hour
+        WHERE
+            lmp.node_id IN ('05LZM-115', '03BFM-230')
+            AND year(lmp.date) = year(current_date)
+        GROUP BY
+            lmp.node_id,
+            schedule.tipo
+    )
+
+    SELECT
+        daily.node_id,
+        daily.date,
+        daily.tipo,
+        round(daily.average, 2) AS lmp,
+        round(yearly.average, 2) AS lmp_average
+    FROM
+        daily
+        JOIN yearly ON daily.node_id = yearly.node_id AND daily.tipo = yearly.tipo
+    ORDER BY node_id, date, tipo'''
+
+
+calling_string_mtr = '''
+    WITH dhours AS (
+            SELECT
+                DISTINCT hour
+            from
+                "cenace_parquet"."rtm_lmp"
+        ),
+        schedule AS (
+            SELECT
+                hour,
+                CASE
+                    WHEN hour >= 8
+                    AND hour <= 18 THEN 'dia'
+                    ELSE 'noche'
+                END AS tipo
+            FROM
+                dhours
+        ),
+        daily AS (
+            SELECT
+                lmp.date,
+                lmp.node_id,
+                schedule.tipo,
+                AVG(lmp.local_marginal_price_mxn_mwh) AS average
+            FROM
+                "cenace_parquet"."rtm_lmp" as lmp
+                LEFT JOIN schedule ON schedule.hour = lmp.hour
+            WHERE
+                lmp.node_id IN ('05LZM-115', '03BFM-230')
+                AND lmp.date = current_date - interval '4' day
+            GROUP BY
+                lmp.date,
+                lmp.node_id,
+                schedule.tipo
+        ),
+        yearly AS (
+            SELECT
+                lmp.node_id,
+                schedule.tipo,
+                AVG(lmp.local_marginal_price_mxn_mwh) AS average
+            FROM
+                "cenace_parquet"."rtm_lmp" as lmp
+                LEFT JOIN schedule ON schedule.hour = lmp.hour
+            WHERE
+                lmp.node_id IN ('05LZM-115', '03BFM-230')
+                AND year(lmp.date) = year(current_date)
+            GROUP BY
+                lmp.node_id,
+                schedule.tipo
+        )
+
+        SELECT
+            daily.node_id,
+            daily.date,
+            daily.tipo,
+            round(daily.average, 2) AS lmp,
+            round(yearly.average, 2) AS lmp_average
+        FROM
+            daily
+            JOIN yearly ON daily.node_id = yearly.node_id AND daily.tipo = yearly.tipo
+        ORDER BY node_id, date, tipo'''
+```
