@@ -1,3 +1,7 @@
+3 a. Write a query in Athena to find out the average star rating of the top 10 customers who are the top reviewers (customers who have the most reviews). Copy and Paste your results output along with the query below.
+3 b. Write a query in Athena to find out the product id, average rating of highest reviewed product. Copy and Paste your results output along with the query below.
+
+
 # SQL commands
 ---
 
